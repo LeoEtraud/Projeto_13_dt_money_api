@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, NextFunction } from "express"; // Adicione NextFunction
 import cors from "cors";
 import { router } from "./routes/routes";
 
@@ -8,18 +8,12 @@ const app = express();
 app.use(express.json());
 app.use(express.static("public"));
 
-// CORS - Use o pacote oficial para maior flexibilidade e segurança
+// CORS
 app.use(
   cors({
-    origin: "*", // ou especifique as origens permitidas
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: [
-      "Origin",
-      "X-Requested-With",
-      "Content-Type",
-      "Accept",
-      "Authorization",
-    ],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
@@ -35,15 +29,15 @@ app.use((req, res, next) => {
 // Rotas
 app.use(router);
 
-// Middleware de tratamento de erros (deve ficar por último)
-app.use((err: Error, req: Request, res: Response) => {
+// Middleware de tratamento de erros (CORRIGIDO)
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  // Adicione next
+  console.error(err.stack); // Log do erro no servidor
   if (err instanceof Error) {
-    return res.status(400).json({ message: err.message });
+    return res.status(400).json({ error: err.message });
   }
-  return res
-    .status(500)
-    .json({ status: "error", message: "Erro interno no servidor" });
+  return res.status(500).json({ error: "Internal Server Error" });
 });
 
-const PORT = process.env.PORT || 3333;
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}!`));

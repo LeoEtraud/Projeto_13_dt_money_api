@@ -4,17 +4,19 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL") // Formato básico e seguro
 }
 
 model Transaction {
   id          String   @id @default(uuid())
   description String
-  price       Decimal
+  price       Decimal  @db.Decimal(10, 2)
   category    String
-  type        String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  type        String   @default("expense")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
+  @@index([category])
+  @@index([createdAt])
   @@map("transactions")
 }

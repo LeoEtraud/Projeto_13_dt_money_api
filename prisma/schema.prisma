@@ -12,8 +12,5 @@ model Transaction {
   description String
   price       Decimal @db.Decimal(10, 2)
   category    String
-  type        String  @default("expense")
-
-  @@index([category])
-  @@map("transactions")
+  type        String
 }

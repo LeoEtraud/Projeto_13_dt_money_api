@@ -2,7 +2,6 @@
   "name": "projeto-13-dt-money-back-end",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "nodemon --exec tsx src/server.ts",
     "build": "tsc -p tsconfig.app.json",

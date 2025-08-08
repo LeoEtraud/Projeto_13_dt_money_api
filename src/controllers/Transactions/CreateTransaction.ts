@@ -4,7 +4,7 @@ import { prismaClient } from "../../database/prismaClient";
 export class CreateTransaction {
   async createTransaction(request: Request, response: Response) {
     try {
-      const { description, price, category, type, createdAt } = request.body;
+      const { description, price, category, type } = request.body;
 
       // Validação básica (opcional, mas recomendado)
       if (!description) {
@@ -19,7 +19,6 @@ export class CreateTransaction {
           price,
           category,
           type,
-          createdAt,
         },
       });
 

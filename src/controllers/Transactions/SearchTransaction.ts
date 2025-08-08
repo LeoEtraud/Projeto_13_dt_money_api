@@ -6,11 +6,11 @@ export class SearchTransaction {
     try {
       const { _sort, _order, q, page } = request.query;
 
-      // Configurar ordenação
-      const orderBy = _sort === "createdAt" ? "createdAt" : "createdAt";
+      // Campo de ordenação — aqui usamos 'id' como padrão
+      const orderByField = _sort && typeof _sort === "string" ? _sort : "id";
       const orderDirection = _order === "desc" ? "desc" : "asc";
 
-      // Configurar filtro de busca
+      // Filtro de busca
       const where = q
         ? {
             OR: [
@@ -30,7 +30,7 @@ export class SearchTransaction {
           }
         : {};
 
-      // Configurar paginação
+      // Paginação
       const pageNumber = page ? parseInt(String(page)) : 0;
       const itemsPerPage = 10;
       const skip = pageNumber * itemsPerPage;
@@ -38,16 +38,13 @@ export class SearchTransaction {
       const transactions = await prismaClient.transaction.findMany({
         where,
         orderBy: {
-          [orderBy]: orderDirection,
+          [orderByField]: orderDirection,
         },
         skip,
         take: itemsPerPage,
       });
 
-      // Buscar total de registros para paginação
-      const total = await prismaClient.transaction.count({
-        where,
-      });
+      const total = await prismaClient.transaction.count({ where });
 
       return response.status(200).json({
         message: "Transações encontradas com sucesso!",

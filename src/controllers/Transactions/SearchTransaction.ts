@@ -4,7 +4,7 @@ import { prismaClient } from "../../database/prismaClient";
 export class SearchTransaction {
   async searchTransaction(request: Request, response: Response) {
     try {
-      const { _sort, _order, q, page } = request.query;
+      const { _sort, _order, q, page } = request.body;
 
       // Campo de ordenação — aqui usamos 'id' como padrão
       const orderByField = _sort && typeof _sort === "string" ? _sort : "id";

@@ -14,7 +14,7 @@ datasource db {
 }
 
 model Transaction {
-  id          String   @id @default(cuid())
+  id          String   @id @default(uuid())
   description String
   price       Decimal
   category    String

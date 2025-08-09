@@ -13,7 +13,7 @@ export class CreateTransaction {
           .json({ error: "ID e description são obrigatórios" });
       }
 
-      const user = await prismaClient.transaction.create({
+      await prismaClient.transaction.create({
         data: {
           description,
           price,
@@ -22,10 +22,7 @@ export class CreateTransaction {
         },
       });
 
-      return response.status(201).json({
-        message: "Transação criada com sucesso!",
-        user,
-      });
+      return response.status(201).json();
     } catch (error) {
       console.error(error);
       return response.status(500).json({ error: "Erro ao criar transação" });

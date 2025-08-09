@@ -11,7 +11,7 @@ const SearchTransactions = new SearchTransaction();
 transactionsRoutes.post("/transactions", Transactions.createTransaction);
 
 //SEARCH TRANSACTION
-transactionsRoutes.post(
+transactionsRoutes.get(
   "/transactions/search",
   SearchTransactions.searchTransaction
 );
